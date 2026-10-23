@@ -77,5 +77,5 @@ one entry per vanilla instance, because Ariane caps `suppress-world-models` at a
 
 ## Licence
 
-The scripts and screenshots are under MIT (see `LICENSE`). GTA San Andreas and SA-MP assets are not included. You
-need your own copies.
+The scripts and screenshots are released into the public domain under [the Unlicense](LICENSE). GTA San Andreas
+and SA-MP assets are not included. You need your own copies.
