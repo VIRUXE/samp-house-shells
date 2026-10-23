@@ -22,7 +22,7 @@ DFF files that any SA-MP or MTA:SA server can use as a drop-in.
 | | problem | state |
 |---|---|---|
 | [#2](https://github.com/VIRUXE/samp-house-shells/issues/2) | interiors have no baked lighting, stay day-bright at night | **done**: all 12 interiors baked (`models/baked/`), checked in MTA:SA |
-| [#3](https://github.com/VIRUXE/samp-house-shells/issues/3) | windows are flat panes, glow white at night | open |
+| [#3](https://github.com/VIRUXE/samp-house-shells/issues/3) | windows are flat panes, glow white at night | **in progress**: the exteriors carry their own glass, so maps can drop `window001`, and `window001` itself no longer glows; to do: lvhouse4 (no panes yet), lshouse3 (1 of its holes), MTA:SA check |
 | [#4](https://github.com/VIRUXE/samp-house-shells/issues/4) | no ceiling from inside | open; in-game the roof underside does show from inside, but sky shows through the gap between the interior walls and the roof (LS); several SF/LV interiors have their own ceiling |
 | [#5](https://github.com/VIRUXE/samp-house-shells/issues/5) | every interior uses the generic `all_walls` textures | open |
 | [#6](https://github.com/VIRUXE/samp-house-shells/issues/6) | no LOD models | open |
@@ -46,16 +46,35 @@ In game (MTA:SA client, same house, the baked model loaded via `engineReplaceMod
 |---|---|
 | ![](screenshots/ingame/mta-ls-ganton-lshouse1-interior-after-noon.jpg) | ![](screenshots/ingame/mta-ls-ganton-lshouse1-interior-after-midnight.jpg) |
 
-<details>
-<summary>Exteriors as they are today (not reworked yet)</summary>
+### Glazed windows (#3)
 
-| | noon | midnight |
-|---|---|---|
-| LS `lshouse1` | ![](screenshots/before/ls-ganton-lshouse1-exterior-noon.png) | ![](screenshots/before/ls-ganton-lshouse1-exterior-midnight.png) |
-| SF `sfhouse2` | ![](screenshots/before/sf-sfhouse2-exterior-noon.png) | ![](screenshots/before/sf-sfhouse2-exterior-midnight.png) |
-| LV `lvhouse1` | ![](screenshots/before/lv-lvhouse1-exterior-noon.png) | ![](screenshots/before/lv-lvhouse1-exterior-midnight.png) |
+The shells ship with open window holes. Maps fill each one with SA-MP's 19466 `window001`: 1,643 objects in the
+Scavenge & Survive houses alone. That model has no prelight and a grey 127 material, so every pane glowed white
+at night, and its texture was a flat 16×16 grey at 85% alpha.
 
-</details>
+- **Each exterior now has its own glass.** A double-sided pane sits in every opening, on one new untextured
+  material: blue-grey, alpha 150, and day/night prelight that turns it dark at night. The exteriors use vanilla
+  TXDs, which have no glass texture, hence the untextured material. Everything else in the DFF is left exactly as
+  SA-MP shipped it. With these models a server can stop placing `window001` in the houses.
+- **`window001` is fixed as well**, for maps that keep it. It gets day/night prelight and a white material, and
+  `lsmall_window01` in `lsmall_shops.txd` becomes a 64×64 glass texture: a sky-to-street gradient with two
+  reflection streaks, at 59% alpha so the room shows through. 19325 `lsmall_window01` (shop glass) shares that
+  texture.
+
+How the openings are found:
+1. `tools/window_seeds.py` takes every `window001` near a shell into that shell's frame. Offsets that recur in at
+   least half of the instances become seeds (`data/window_seeds.json`).
+2. `tools/glaze_shells.py` casts rays through the wall on a 4 cm grid around each seed and grows the open region.
+   That region's bounds are the opening, and the wall faces just outside it give the depth. Regions that leak past
+   ±3 m (doorways, open sides) are dropped, and seeds on solid wall find nothing.
+3. The fitted openings go to `data/windows.json`, and `tools/add_panes.py` writes the panes.
+
+![sfhouse2 exterior](screenshots/compare/sf-sfhouse2-exterior.png)
+![lshouse1 exterior](screenshots/compare/ls-ganton-lshouse1-exterior.png)
+![lvhouse1 exterior](screenshots/compare/lv-lvhouse1-exterior.png)
+
+The "after" shots hide every `window001` (`apply-removals.ps1 -WithoutPanes`), so the glass you see is the
+shells' own.
 
 All shots are viewport captures from [Ariane](https://github.com/Dryxio/ariane) at weather 1, taken by
 `ariane/shots.ps1` from fixed cameras, so before and after line up exactly. The placements are a real server's: the
@@ -67,31 +86,44 @@ the vanilla houses underneath.
 | path | what |
 |---|---|
 | `models/original/` | the 24 shell DFFs and `all_walls.txd`, extracted from SA-MP's `SAMP.img` |
-| `models/baked/` | reworked interiors (drop-in replacements, same names) |
+| `models/original/window001.dff`, `lsmall_shops.txd` | SA-MP's window pane and its TXD, extracted from `SAMP.img` |
+| `models/baked/` | reworked models (drop-in replacements, same names): baked interiors, glazed exteriors, `window001`, `lsmall_shops.txd` |
+| `data/window_seeds.json`, `data/windows.json` | where maps put window panes per shell, and the openings fitted from them |
 | `screenshots/before`, `after`, `compare` | Ariane captures and the generated before/after grids |
 | `screenshots/ingame` | MTA:SA client captures |
 | `tools/img.py` | IMG v2 extract/build |
 | `tools/bake_interiors.py` | headless Blender bake of the interiors |
+| `tools/window_seeds.py` | `window001` placements → per-shell seeds |
+| `tools/glaze_shells.py` | headless Blender: fits each seed to its opening by ray casting |
+| `tools/add_panes.py` | writes the panes into the exteriors (gtaLib, rest of the DFF untouched) |
+| `tools/rework_window.py` | prelight for `window001`, new glass texture in `lsmall_shops.txd` |
 | `tools/view_house.py` | opens a house in Blender: original interior left, baked right, game-style shading, `night` slider |
 | `tools/compare.py` | builds `screenshots/compare/*.png` |
 | `tools/make_ipl.py` | server placements → IPL for Ariane |
 | `tools/blender_call.py` | sends one command to a running Blender's blender-mcp socket (screenshots, scripted edits) |
-| `ariane/*.ps1` | start/drive Ariane, swap original/baked shells, take the named shots |
+| `ariane/*.ps1`, `ariane/removals.py` | start/drive Ariane, swap original/baked models, replay removals over one connection, take the named shots |
 
 ## Workflow
 
 ```powershell
 # bake (headless, ~1 min for all 12)
 & 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --factory-startup --python tools/bake_interiors.py -- models/original models/baked
+# glaze the exteriors and rework window001 (DragonFF checkout for gtaLib)
+python -I tools/window_seeds.py <game copy>\scavenge\scavenge.ipl data/window_seeds.json
+& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --factory-startup --python tools/glaze_shells.py -- models/original data/window_seeds.json data/windows.json
+python -I tools/add_panes.py <DragonFF> models/original data/windows.json models/baked
+python -I tools/rework_window.py <DragonFF> models/original models/baked
 # look at one in Blender (original left, baked right; Scene properties > Custom Properties > night)
 & 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --python tools/view_house.py -- lshouse1
 # see it in the world, then capture and compare
-pwsh ariane/use-shells.ps1 baked        # or: original
+pwsh ariane/use-shells.ps1 baked        # or: original; baked also hides the maps' window001
 pwsh ariane/shots.ps1 after             # or: before; optional name filter, e.g. '*-interior'
 python -I tools/compare.py
 ```
 
-DragonFF notes. SA-MP's shells keep their material ids only in the BinMesh PLG; the triangle list says material 0
+DragonFF notes. gtaLib reads the BinMesh into a plain list (`extensions["mat_split"]`) that its writer cannot
+serialise. The gtaLib tools move those triangles, which carry the real material ids, into `geometry.triangles`
+and let the writer rebuild the BinMesh. SA-MP's shells keep their material ids only in the BinMesh PLG; the triangle list says material 0
 everywhere. Import with `read_mat_split=True`, or every face gets the first texture. Import with
 `remove_doubles=False`, or overlapping faces are merged away. The bake checks that each output's BinMesh matches
 the original's.
@@ -128,6 +160,7 @@ the original's.
    python -I tools/make_ipl.py <scavengesurvive-mta checkout> <game copy> <game copy>\scavenge
    pwsh ariane/start.ps1              # editor on port 48731, token in %LOCALAPPDATA%\ariane-agent\token
    pwsh ariane/apply-removals.ps1     # replays the maps' RemoveBuildingForPlayer list as a scratch session
+                                      # (-WithoutPanes also hides window001; takes seconds)
    ```
 
    `make_ipl.py` reads the map data that [scavengesurvive-mta](https://github.com/VIRUXE/scavengesurvive-mta)
