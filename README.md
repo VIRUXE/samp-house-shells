@@ -22,7 +22,7 @@ DFF files that any SA-MP or MTA:SA server can use as a drop-in.
 | | problem | state |
 |---|---|---|
 | [#2](https://github.com/VIRUXE/samp-house-shells/issues/2) | interiors have no baked lighting, stay day-bright at night | **done**: all 12 interiors baked (`models/baked/`), checked in MTA:SA |
-| [#3](https://github.com/VIRUXE/samp-house-shells/issues/3) | windows are flat panes, glow white at night | **in progress**: every shell glazed with framed, vanilla-dark glass, so maps can drop `window001`, which no longer glows either; to do: MTA:SA check |
+| [#3](https://github.com/VIRUXE/samp-house-shells/issues/3) | windows are flat panes, glow white at night | **in progress**: every shell has built-in windows (reveal, sill, reflective glass, per-house frames, curtains and blinds), so maps can drop `window001`, which no longer glows either; to do: check in the MTA:SA client |
 | [#4](https://github.com/VIRUXE/samp-house-shells/issues/4) | no ceiling from inside | open; in-game the roof underside does show from inside, but sky shows through the gap between the interior walls and the roof (LS); several SF/LV interiors have their own ceiling |
 | [#5](https://github.com/VIRUXE/samp-house-shells/issues/5) | every interior uses the generic `all_walls` textures | open |
 | [#6](https://github.com/VIRUXE/samp-house-shells/issues/6) | no LOD models | open |
@@ -59,16 +59,17 @@ at night, and its texture was a flat 16×16 grey at 85% alpha.
 - **Each exterior now has its own windows.** Every opening gets a lined reveal, a sill, glass set into the wall, a
   frame that stands out of it and, behind it, curtains, a blind or nothing. The frame follows the window texture in
   the house's vanilla TXD: white sashes in SF, weathered wood in Ganton, louvres, security bars, and so on (see
-  [the houses](docs/houses.md)).
-
-  ![window detail](screenshots/houses/details.png)
- Everything else in the DFF is left exactly as SA-MP shipped
-  it. With these models a server can stop placing `window001` in the houses.
+  [the houses](docs/houses.md)). Everything else in the DFF is left exactly as SA-MP shipped it. With these models
+  a server can stop placing `window001` in the houses.
 - **The look follows vanilla's see-through glass.** In the Wang Cars showroom (`carshowwin_SFSX`) and the SF
   Ammu-Nation (`ammuwindows_SFS`), glass is a white-material alpha texture with dark prelight (about 35 by day). It
   reads as glass with the room behind it, never as a grey board; light, lit-from-inside windows come only from
   bright night colours. The exteriors use vanilla TXDs, which have no glass texture, so the panes are untextured:
-  alpha 170, prelight graded from about 30 at the bottom to 60 at the top like a sky reflection, and dark at night.
+  alpha 170, prelight graded from about 30 at the bottom to 60 at the top like a sky reflection, a diagonal
+  reflection band, and dark at night.
+
+![window detail](screenshots/houses/details.png)
+
 - **`window001` is fixed as well**, for maps that keep it. It gets day/night prelight and a white material, and
   `lsmall_window01` in `lsmall_shops.txd` becomes a 64×64 glass texture: a sky-to-street gradient with two
   reflection streaks, at 59% alpha so the room shows through. 19325 `lsmall_window01` (shop glass) shares that
@@ -110,14 +111,15 @@ the vanilla houses underneath.
 | `models/original/` | the 24 shell DFFs and `all_walls.txd`, extracted from SA-MP's `SAMP.img` |
 | `models/original/window001.dff`, `lsmall_shops.txd` | SA-MP's window pane and its TXD, extracted from `SAMP.img` |
 | `models/baked/` | reworked models (drop-in replacements, same names): baked interiors, glazed exteriors, `window001`, `lsmall_shops.txd` |
-| `data/window_seeds.json`, `data/windows.json` | where maps put window panes per shell, and the openings fitted from them |
+| `data/window_seeds.json`, `data/windows.json` | where maps put window panes and doors per shell, and the openings fitted from them |
 | `screenshots/before`, `after`, `compare` | Ariane captures and the generated before/after grids |
+| `screenshots/houses`, `docs/houses.md` | Blender renders of every house, original next to reworked, and the window close-ups |
 | `screenshots/ingame` | MTA:SA client captures |
 | `tools/img.py` | IMG v2 extract/build |
 | `tools/bake_interiors.py` | headless Blender bake of the interiors |
 | `tools/window_seeds.py` | `window001` placements → per-shell seeds |
-| `tools/glaze_shells.py` | headless Blender: fits each seed to its opening by ray casting |
-| `tools/add_panes.py` | writes the framed panes into the exteriors (gtaLib, rest of the DFF untouched) |
+| `tools/glaze_shells.py` | headless Blender: scans each exterior for openings, fits them by ray casting, turns them to face out and measures the wall depth |
+| `tools/add_panes.py` | builds the windows into the exteriors: reveal, sill, glass, frame, curtains (gtaLib, rest of the DFF untouched) |
 | `tools/rework_window.py` | prelight for `window001`, new glass texture in `lsmall_shops.txd` |
 | `tools/view_house.py` | opens a house in Blender: original interior left, baked right, game-style shading, `night` slider |
 | `tools/compare.py` | builds `screenshots/compare/*.png` |
@@ -136,6 +138,9 @@ python -I tools/window_seeds.py <game copy>\scavenge\scavenge.ipl data/window_se
 & 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --factory-startup --python tools/glaze_shells.py -- models/original data/window_seeds.json data/windows.json
 python -I tools/add_panes.py <DragonFF> models/original data/windows.json models/baked
 python -I tools/rework_window.py <DragonFF> models/original models/baked
+# render every house for docs/houses.md (renders in work/renders)
+& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --factory-startup --python tools/render_houses.py
+python -I tools/gallery.py
 # look at one in Blender (original left, baked right; Scene properties > Custom Properties > night)
 & 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --python tools/view_house.py -- lshouse1
 # see it in the world, then capture and compare
