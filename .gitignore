@@ -1,2 +1,4 @@
 __pycache__/
 *.blend1
+# vanilla game files extracted for viewing; never commit
+work/
