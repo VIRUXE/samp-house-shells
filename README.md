@@ -22,7 +22,7 @@ DFF files that any SA-MP or MTA:SA server can use as a drop-in.
 | | problem | state |
 |---|---|---|
 | [#2](https://github.com/VIRUXE/samp-house-shells/issues/2) | interiors have no baked lighting, stay day-bright at night | **done**: all 12 interiors baked (`models/baked/`), checked in MTA:SA |
-| [#3](https://github.com/VIRUXE/samp-house-shells/issues/3) | windows are flat panes, glow white at night | **in progress**: the exteriors carry their own glass, so maps can drop `window001`, and `window001` itself no longer glows; to do: lvhouse4 (no panes yet), lshouse3 (1 of its holes), MTA:SA check |
+| [#3](https://github.com/VIRUXE/samp-house-shells/issues/3) | windows are flat panes, glow white at night | **in progress**: every shell glazed with framed, vanilla-dark glass, so maps can drop `window001`, which no longer glows either; to do: MTA:SA check |
 | [#4](https://github.com/VIRUXE/samp-house-shells/issues/4) | no ceiling from inside | open; in-game the roof underside does show from inside, but sky shows through the gap between the interior walls and the roof (LS); several SF/LV interiors have their own ceiling |
 | [#5](https://github.com/VIRUXE/samp-house-shells/issues/5) | every interior uses the generic `all_walls` textures | open |
 | [#6](https://github.com/VIRUXE/samp-house-shells/issues/6) | no LOD models | open |
@@ -67,12 +67,21 @@ at night, and its texture was a flat 16×16 grey at 85% alpha.
   texture.
 
 How the openings are found:
-1. `tools/window_seeds.py` takes every `window001` near a shell into that shell's frame. Offsets that recur in at
-   least half of the instances become seeds (`data/window_seeds.json`).
-2. `tools/glaze_shells.py` casts rays through the wall on a 4 cm grid around each seed and grows the open region.
-   That region's bounds are the opening, and the wall faces just outside it give the depth. Regions that leak past
-   ±3 m (doorways, open sides) are dropped, and seeds on solid wall find nothing.
-3. The fitted openings go to `data/windows.json`, and `tools/add_panes.py` writes the panes.
+1. `tools/window_seeds.py` takes every `window001` near a shell into that shell's frame, plus every door object.
+   Offsets that recur in at least half of the instances become seeds (`data/window_seeds.json`).
+2. `tools/glaze_shells.py` adds seeds of its own. Maps glaze only some holes: lshouse3 gets one, and lvhouse4's
+   seeds sit outside the model. The script sweeps each exterior with horizontal rays from 8 directions, groups the
+   hits into wall planes, and takes every enclosed gap in a plane as a seed.
+3. Each seed is fitted: rays are cast through the wall on a 4 cm grid around it, and the open region connected to the
+   seed is the opening. Openings that leak past ±3 m are dropped. Scanned openings are also dropped when they:
+   - hold a map door object (an entrance),
+   - are not fully rectangular (an arched doorway), or
+   - are over 2.4 m tall (a garage).
+4. The fitted openings go to `data/windows.json` (each tagged `map` or `scan`), and `tools/add_panes.py` writes the
+   panes.
+
+`ariane/tour.py` flies the editor round one instance of each shell and captures it from two corners, which is how
+the missing panes were spotted.
 
 ![sfhouse2 exterior](screenshots/compare/sf-sfhouse2-exterior.png)
 ![lshouse1 exterior](screenshots/compare/ls-ganton-lshouse1-exterior.png)
@@ -106,7 +115,7 @@ the vanilla houses underneath.
 | `tools/compare.py` | builds `screenshots/compare/*.png` |
 | `tools/make_ipl.py` | server placements → IPL for Ariane |
 | `tools/blender_call.py` | sends one command to a running Blender's blender-mcp socket (screenshots, scripted edits) |
-| `ariane/*.ps1`, `ariane/removals.py`, `ariane/look_at.py` | start/drive Ariane, swap original/baked models, replay removals over one connection, aim the camera at a placed model (vanilla references), take the named shots |
+| `ariane/*.ps1`, `ariane/removals.py`, `ariane/look_at.py`, `ariane/tour.py` | start/drive Ariane, swap original/baked models, replay removals over one connection, aim the camera at a placed model (vanilla references), tour every shell, take the named shots |
 
 ## Workflow
 

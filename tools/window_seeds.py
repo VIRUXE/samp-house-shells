@@ -5,7 +5,8 @@ usage: python tools/window_seeds.py <scavenge.ipl from make_ipl.py> data/window_
 The shells ship with open window holes, so maps fill them with SA-MP's 19466 window001, one object per hole (1643 in
 Scavenge & Survive). Every window001 within 20 m of a shell is moved into that shell's local frame; offsets that recur
 in at least half of a shell type's instances are the holes. Only the rough centre and facing are kept: the glazing
-tool fits the actual opening from the geometry.
+tool fits the actual opening from the geometry. Door objects (any model named *door*) are collected the same way, so
+the glazing tool's own scan never puts glass across an entrance.
 """
 
 import collections
@@ -32,21 +33,26 @@ def main() -> None:
         if len(parts) == 11 and parts[0].isdigit():
             rows.append((parts[1].lower(), *map(float, parts[3:10])))
     panes = [r for r in rows if r[0] == "window001" and yaw(*r[4:]) is not None]
+    doors = [r for r in rows if "door" in r[0] and yaw(*r[4:]) is not None]
     seeds = {}
     for house in HOUSES:
         instances = [r for r in rows if r[0] == house and yaw(*r[4:]) is not None]
-        offsets = collections.Counter()
+        offsets, door_offsets = collections.Counter(), collections.Counter()
         for _, hx, hy, hz, *q in instances:
             angle = math.radians(-yaw(*q))
             c, s = math.cos(angle), math.sin(angle)
-            for _, wx, wy, wz, *wq in panes:
-                dx, dy, dz = wx - hx, wy - hy, wz - hz
-                if dx * dx + dy * dy < 400 and abs(dz) < 12:
-                    facing = round((yaw(*wq) - yaw(*q)) % 180)
-                    offsets[(round(dx * c - dy * s, 1), round(dx * s + dy * c, 1), round(dz, 1), facing)] += 1
+            for found, objects in ((offsets, panes), (door_offsets, doors)):
+                for _, wx, wy, wz, *wq in objects:
+                    dx, dy, dz = wx - hx, wy - hy, wz - hz
+                    if dx * dx + dy * dy < 400 and abs(dz) < 12:
+                        facing = round((yaw(*wq) - yaw(*q)) % 180)
+                        found[(round(dx * c - dy * s, 1), round(dx * s + dy * c, 1), round(dz, 1), facing)] += 1
         keep = max(2, len(instances) // 2)
-        seeds[house] = [{"centre": list(k[:3]), "normal": "x" if k[3] == 0 else "y", "seen": n} for k, n in sorted(offsets.items()) if n >= keep]
-        print(f"{house}: {len(instances)} instances, {len(seeds[house])} seeds")
+        seeds[house] = {
+            "windows": [{"centre": list(k[:3]), "normal": "x" if k[3] == 0 else "y", "seen": n} for k, n in sorted(offsets.items()) if n >= keep],
+            "doors": [{"centre": list(k[:3]), "seen": n} for k, n in sorted(door_offsets.items()) if n >= keep],
+        }
+        print(f"{house}: {len(instances)} instances, {len(seeds[house]['windows'])} window seeds, {len(seeds[house]['doors'])} doors")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(seeds, indent=1) + "\n")
 

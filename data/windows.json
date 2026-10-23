@@ -14,7 +14,8 @@
    "width": 2.76,
    "height": 2.48,
    "open_cells": 4278,
-   "cells": 4278
+   "cells": 4278,
+   "source": "map"
   },
   {
    "centre": [
@@ -30,7 +31,8 @@
    "width": 1.96,
    "height": 1.64,
    "open_cells": 2009,
-   "cells": 2009
+   "cells": 2009,
+   "source": "map"
   },
   {
    "centre": [
@@ -46,7 +48,8 @@
    "width": 2.8,
    "height": 1.64,
    "open_cells": 2870,
-   "cells": 2870
+   "cells": 2870,
+   "source": "map"
   },
   {
    "centre": [
@@ -62,7 +65,8 @@
    "width": 2.76,
    "height": 1.44,
    "open_cells": 2484,
-   "cells": 2484
+   "cells": 2484,
+   "source": "map"
   },
   {
    "centre": [
@@ -78,7 +82,8 @@
    "width": 2.8,
    "height": 1.44,
    "open_cells": 2520,
-   "cells": 2520
+   "cells": 2520,
+   "source": "map"
   },
   {
    "centre": [
@@ -94,7 +99,25 @@
    "width": 2.8,
    "height": 1.88,
    "open_cells": 3290,
-   "cells": 3290
+   "cells": 3290,
+   "source": "map"
+  },
+  {
+   "centre": [
+    6.008,
+    0.919,
+    0.681
+   ],
+   "normal": [
+    -0.0,
+    -1.0,
+    0.0
+   ],
+   "width": 1.16,
+   "height": 2.08,
+   "open_cells": 1508,
+   "cells": 1508,
+   "source": "scan"
   }
  ],
  "sfhouse2": [
@@ -112,7 +135,8 @@
    "width": 2.4,
    "height": 1.6,
    "open_cells": 2400,
-   "cells": 2400
+   "cells": 2400,
+   "source": "map"
   },
   {
    "centre": [
@@ -128,7 +152,8 @@
    "width": 2.4,
    "height": 1.64,
    "open_cells": 2460,
-   "cells": 2460
+   "cells": 2460,
+   "source": "map"
   },
   {
    "centre": [
@@ -144,7 +169,8 @@
    "width": 2.36,
    "height": 1.64,
    "open_cells": 2419,
-   "cells": 2419
+   "cells": 2419,
+   "source": "map"
   },
   {
    "centre": [
@@ -160,7 +186,8 @@
    "width": 1.36,
    "height": 1.8,
    "open_cells": 1530,
-   "cells": 1530
+   "cells": 1530,
+   "source": "map"
   },
   {
    "centre": [
@@ -176,7 +203,8 @@
    "width": 0.96,
    "height": 1.32,
    "open_cells": 792,
-   "cells": 792
+   "cells": 792,
+   "source": "map"
   },
   {
    "centre": [
@@ -192,7 +220,8 @@
    "width": 2.92,
    "height": 1.32,
    "open_cells": 2409,
-   "cells": 2409
+   "cells": 2409,
+   "source": "map"
   },
   {
    "centre": [
@@ -208,7 +237,8 @@
    "width": 2.92,
    "height": 1.8,
    "open_cells": 3285,
-   "cells": 3285
+   "cells": 3285,
+   "source": "map"
   }
  ],
  "sfhouse3": [
@@ -226,7 +256,8 @@
    "width": 1.4,
    "height": 1.8,
    "open_cells": 1575,
-   "cells": 1575
+   "cells": 1575,
+   "source": "map"
   },
   {
    "centre": [
@@ -242,7 +273,8 @@
    "width": 2.96,
    "height": 1.84,
    "open_cells": 3404,
-   "cells": 3404
+   "cells": 3404,
+   "source": "map"
   },
   {
    "centre": [
@@ -258,7 +290,8 @@
    "width": 0.96,
    "height": 1.32,
    "open_cells": 792,
-   "cells": 792
+   "cells": 792,
+   "source": "map"
   },
   {
    "centre": [
@@ -274,7 +307,8 @@
    "width": 1.4,
    "height": 1.84,
    "open_cells": 1610,
-   "cells": 1610
+   "cells": 1610,
+   "source": "map"
   },
   {
    "centre": [
@@ -290,7 +324,8 @@
    "width": 0.96,
    "height": 1.32,
    "open_cells": 792,
-   "cells": 792
+   "cells": 792,
+   "source": "map"
   },
   {
    "centre": [
@@ -306,7 +341,8 @@
    "width": 3.0,
    "height": 1.32,
    "open_cells": 2475,
-   "cells": 2475
+   "cells": 2475,
+   "source": "map"
   },
   {
    "centre": [
@@ -322,7 +358,8 @@
    "width": 2.96,
    "height": 1.84,
    "open_cells": 3404,
-   "cells": 3404
+   "cells": 3404,
+   "source": "map"
   }
  ],
  "sfhouse4": [
@@ -340,7 +377,8 @@
    "width": 2.64,
    "height": 1.68,
    "open_cells": 2772,
-   "cells": 2772
+   "cells": 2772,
+   "source": "map"
   },
   {
    "centre": [
@@ -356,7 +394,8 @@
    "width": 2.12,
    "height": 2.48,
    "open_cells": 3286,
-   "cells": 3286
+   "cells": 3286,
+   "source": "map"
   },
   {
    "centre": [
@@ -372,7 +411,8 @@
    "width": 1.4,
    "height": 1.8,
    "open_cells": 1575,
-   "cells": 1575
+   "cells": 1575,
+   "source": "map"
   },
   {
    "centre": [
@@ -388,7 +428,42 @@
    "width": 0.92,
    "height": 1.32,
    "open_cells": 759,
-   "cells": 759
+   "cells": 759,
+   "source": "map"
+  },
+  {
+   "centre": [
+    6.062,
+    2.258,
+    -2.693
+   ],
+   "normal": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "width": 4.36,
+   "height": 1.32,
+   "open_cells": 3597,
+   "cells": 3597,
+   "source": "scan"
+  },
+  {
+   "centre": [
+    6.062,
+    2.258,
+    -0.083
+   ],
+   "normal": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "width": 4.36,
+   "height": 1.8,
+   "open_cells": 4905,
+   "cells": 4905,
+   "source": "scan"
   }
  ],
  "lvhouse1": [
@@ -406,7 +481,8 @@
    "width": 1.6,
    "height": 0.88,
    "open_cells": 880,
-   "cells": 880
+   "cells": 880,
+   "source": "map"
   },
   {
    "centre": [
@@ -422,7 +498,8 @@
    "width": 2.0,
    "height": 0.88,
    "open_cells": 1100,
-   "cells": 1100
+   "cells": 1100,
+   "source": "map"
   },
   {
    "centre": [
@@ -438,7 +515,8 @@
    "width": 1.96,
    "height": 1.2,
    "open_cells": 1470,
-   "cells": 1470
+   "cells": 1470,
+   "source": "map"
   },
   {
    "centre": [
@@ -454,7 +532,8 @@
    "width": 1.72,
    "height": 0.88,
    "open_cells": 946,
-   "cells": 946
+   "cells": 946,
+   "source": "map"
   },
   {
    "centre": [
@@ -470,7 +549,8 @@
    "width": 1.72,
    "height": 0.84,
    "open_cells": 903,
-   "cells": 903
+   "cells": 903,
+   "source": "map"
   }
  ],
  "lvhouse2": [
@@ -488,7 +568,8 @@
    "width": 2.88,
    "height": 1.64,
    "open_cells": 2952,
-   "cells": 2952
+   "cells": 2952,
+   "source": "map"
   },
   {
    "centre": [
@@ -504,7 +585,8 @@
    "width": 3.04,
    "height": 1.64,
    "open_cells": 3116,
-   "cells": 3116
+   "cells": 3116,
+   "source": "map"
   },
   {
    "centre": [
@@ -520,7 +602,8 @@
    "width": 4.72,
    "height": 1.68,
    "open_cells": 4956,
-   "cells": 4956
+   "cells": 4956,
+   "source": "map"
   },
   {
    "centre": [
@@ -536,7 +619,25 @@
    "width": 3.04,
    "height": 1.68,
    "open_cells": 3192,
-   "cells": 3192
+   "cells": 3192,
+   "source": "map"
+  },
+  {
+   "centre": [
+    -2.657,
+    6.552,
+    -1.756
+   ],
+   "normal": [
+    -0.0,
+    -1.0,
+    0.0
+   ],
+   "width": 4.88,
+   "height": 1.68,
+   "open_cells": 5124,
+   "cells": 5124,
+   "source": "scan"
   }
  ],
  "lvhouse3": [
@@ -554,7 +655,8 @@
    "width": 2.88,
    "height": 1.44,
    "open_cells": 2592,
-   "cells": 2592
+   "cells": 2592,
+   "source": "map"
   },
   {
    "centre": [
@@ -570,7 +672,8 @@
    "width": 3.48,
    "height": 1.4,
    "open_cells": 3045,
-   "cells": 3045
+   "cells": 3045,
+   "source": "map"
   },
   {
    "centre": [
@@ -586,7 +689,8 @@
    "width": 4.72,
    "height": 1.68,
    "open_cells": 4956,
-   "cells": 4956
+   "cells": 4956,
+   "source": "map"
   },
   {
    "centre": [
@@ -602,10 +706,97 @@
    "width": 3.48,
    "height": 1.4,
    "open_cells": 3045,
-   "cells": 3045
+   "cells": 3045,
+   "source": "map"
+  },
+  {
+   "centre": [
+    2.403,
+    9.044,
+    -1.443
+   ],
+   "normal": [
+    -0.0,
+    -1.0,
+    0.0
+   ],
+   "width": 3.24,
+   "height": 1.4,
+   "open_cells": 2835,
+   "cells": 2835,
+   "source": "scan"
   }
  ],
- "lvhouse4": [],
+ "lvhouse4": [
+  {
+   "centre": [
+    -13.076,
+    0.808,
+    -0.843
+   ],
+   "normal": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "width": 3.16,
+   "height": 2.2,
+   "open_cells": 4345,
+   "cells": 4345,
+   "source": "scan"
+  },
+  {
+   "centre": [
+    -13.076,
+    -6.142,
+    -0.843
+   ],
+   "normal": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "width": 3.16,
+   "height": 2.2,
+   "open_cells": 4345,
+   "cells": 4345,
+   "source": "scan"
+  },
+  {
+   "centre": [
+    -10.703,
+    -9.24,
+    -0.843
+   ],
+   "normal": [
+    -0.0,
+    -1.0,
+    0.0
+   ],
+   "width": 3.16,
+   "height": 2.2,
+   "open_cells": 4345,
+   "cells": 4345,
+   "source": "scan"
+  },
+  {
+   "centre": [
+    -6.453,
+    -9.24,
+    -0.843
+   ],
+   "normal": [
+    -0.0,
+    -1.0,
+    0.0
+   ],
+   "width": 3.16,
+   "height": 2.2,
+   "open_cells": 4345,
+   "cells": 4345,
+   "source": "scan"
+  }
+ ],
  "lshouse1": [
   {
    "centre": [
@@ -621,7 +812,8 @@
    "width": 1.64,
    "height": 1.36,
    "open_cells": 1394,
-   "cells": 1394
+   "cells": 1394,
+   "source": "map"
   },
   {
    "centre": [
@@ -637,7 +829,8 @@
    "width": 2.04,
    "height": 1.4,
    "open_cells": 1785,
-   "cells": 1785
+   "cells": 1785,
+   "source": "map"
   },
   {
    "centre": [
@@ -653,7 +846,8 @@
    "width": 1.8,
    "height": 1.4,
    "open_cells": 1575,
-   "cells": 1575
+   "cells": 1575,
+   "source": "map"
   },
   {
    "centre": [
@@ -669,7 +863,8 @@
    "width": 1.4,
    "height": 1.48,
    "open_cells": 1295,
-   "cells": 1295
+   "cells": 1295,
+   "source": "map"
   },
   {
    "centre": [
@@ -685,7 +880,8 @@
    "width": 1.88,
    "height": 1.4,
    "open_cells": 1645,
-   "cells": 1645
+   "cells": 1645,
+   "source": "map"
   },
   {
    "centre": [
@@ -701,7 +897,8 @@
    "width": 1.88,
    "height": 1.4,
    "open_cells": 1645,
-   "cells": 1645
+   "cells": 1645,
+   "source": "map"
   },
   {
    "centre": [
@@ -717,7 +914,8 @@
    "width": 1.72,
    "height": 1.4,
    "open_cells": 1505,
-   "cells": 1505
+   "cells": 1505,
+   "source": "map"
   },
   {
    "centre": [
@@ -733,7 +931,8 @@
    "width": 2.28,
    "height": 1.4,
    "open_cells": 1995,
-   "cells": 1995
+   "cells": 1995,
+   "source": "map"
   }
  ],
  "lshouse2": [
@@ -751,7 +950,8 @@
    "width": 2.12,
    "height": 1.4,
    "open_cells": 1855,
-   "cells": 1855
+   "cells": 1855,
+   "source": "map"
   },
   {
    "centre": [
@@ -767,7 +967,8 @@
    "width": 1.72,
    "height": 1.4,
    "open_cells": 1505,
-   "cells": 1505
+   "cells": 1505,
+   "source": "map"
   },
   {
    "centre": [
@@ -783,7 +984,8 @@
    "width": 1.48,
    "height": 1.36,
    "open_cells": 1258,
-   "cells": 1258
+   "cells": 1258,
+   "source": "map"
   },
   {
    "centre": [
@@ -799,7 +1001,8 @@
    "width": 1.16,
    "height": 1.48,
    "open_cells": 1073,
-   "cells": 1073
+   "cells": 1073,
+   "source": "map"
   },
   {
    "centre": [
@@ -815,7 +1018,8 @@
    "width": 1.56,
    "height": 1.36,
    "open_cells": 1326,
-   "cells": 1326
+   "cells": 1326,
+   "source": "map"
   },
   {
    "centre": [
@@ -831,7 +1035,8 @@
    "width": 1.56,
    "height": 1.36,
    "open_cells": 1326,
-   "cells": 1326
+   "cells": 1326,
+   "source": "map"
   },
   {
    "centre": [
@@ -847,7 +1052,8 @@
    "width": 1.4,
    "height": 1.36,
    "open_cells": 1190,
-   "cells": 1190
+   "cells": 1190,
+   "source": "map"
   },
   {
    "centre": [
@@ -863,7 +1069,8 @@
    "width": 2.4,
    "height": 1.4,
    "open_cells": 2100,
-   "cells": 2100
+   "cells": 2100,
+   "source": "map"
   }
  ],
  "lshouse3": [
@@ -881,7 +1088,25 @@
    "width": 1.16,
    "height": 1.32,
    "open_cells": 957,
-   "cells": 957
+   "cells": 957,
+   "source": "map"
+  },
+  {
+   "centre": [
+    2.587,
+    3.497,
+    -0.298
+   ],
+   "normal": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "width": 1.12,
+   "height": 1.32,
+   "open_cells": 924,
+   "cells": 924,
+   "source": "scan"
   }
  ],
  "lshouse4": [
@@ -899,7 +1124,8 @@
    "width": 2.24,
    "height": 1.32,
    "open_cells": 1848,
-   "cells": 1848
+   "cells": 1848,
+   "source": "map"
   },
   {
    "centre": [
@@ -915,7 +1141,8 @@
    "width": 1.32,
    "height": 1.12,
    "open_cells": 924,
-   "cells": 924
+   "cells": 924,
+   "source": "map"
   },
   {
    "centre": [
@@ -931,7 +1158,8 @@
    "width": 2.04,
    "height": 1.16,
    "open_cells": 1479,
-   "cells": 1479
+   "cells": 1479,
+   "source": "map"
   },
   {
    "centre": [
@@ -947,7 +1175,8 @@
    "width": 0.84,
    "height": 0.96,
    "open_cells": 504,
-   "cells": 504
+   "cells": 504,
+   "source": "map"
   },
   {
    "centre": [
@@ -963,7 +1192,8 @@
    "width": 0.8,
    "height": 1.12,
    "open_cells": 560,
-   "cells": 560
+   "cells": 560,
+   "source": "map"
   },
   {
    "centre": [
@@ -979,7 +1209,8 @@
    "width": 1.0,
    "height": 1.0,
    "open_cells": 625,
-   "cells": 625
+   "cells": 625,
+   "source": "map"
   },
   {
    "centre": [
@@ -995,7 +1226,8 @@
    "width": 1.2,
    "height": 1.24,
    "open_cells": 930,
-   "cells": 930
+   "cells": 930,
+   "source": "map"
   }
  ]
 }
