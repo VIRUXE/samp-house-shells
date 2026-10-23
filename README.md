@@ -21,9 +21,9 @@ DFF files that any SA-MP or MTA:SA server can use as a drop-in.
 
 | | problem | state |
 |---|---|---|
-| [#2](https://github.com/VIRUXE/samp-house-shells/issues/2) | interiors have no baked lighting, stay day-bright at night | **baked** for all 12 interiors (`models/baked/`); in-game check pending |
+| [#2](https://github.com/VIRUXE/samp-house-shells/issues/2) | interiors have no baked lighting, stay day-bright at night | **done**: all 12 interiors baked (`models/baked/`), checked in MTA:SA |
 | [#3](https://github.com/VIRUXE/samp-house-shells/issues/3) | windows are flat panes, glow white at night | open |
-| [#4](https://github.com/VIRUXE/samp-house-shells/issues/4) | no ceiling from inside | open; the LS interiors have none, several SF/LV ones do (`mp_burn_ceiling`) |
+| [#4](https://github.com/VIRUXE/samp-house-shells/issues/4) | no ceiling from inside | open; in-game the roof underside does show from inside, but sky shows through the gap between the interior walls and the roof (LS); several SF/LV interiors have their own ceiling |
 | [#5](https://github.com/VIRUXE/samp-house-shells/issues/5) | every interior uses the generic `all_walls` textures | open |
 | [#6](https://github.com/VIRUXE/samp-house-shells/issues/6) | no LOD models | open |
 | [#7](https://github.com/VIRUXE/samp-house-shells/issues/7) | drop-in package for SA-MP and MTA:SA | open |
@@ -39,6 +39,12 @@ goes from grey 127 to white, because SA multiplies texture × prelight × materi
 
 ![lshouse1 interior](screenshots/compare/ls-ganton-lshouse1-interior.png)
 ![lvhouse1 interior](screenshots/compare/lv-lvhouse1-interior.png)
+
+In game (MTA:SA client, same house, the baked model loaded via `engineReplaceModel`):
+
+| noon | midnight |
+|---|---|
+| ![](screenshots/ingame/mta-ls-ganton-lshouse1-interior-after-noon.jpg) | ![](screenshots/ingame/mta-ls-ganton-lshouse1-interior-after-midnight.jpg) |
 
 <details>
 <summary>Exteriors as they are today (not reworked yet)</summary>
@@ -63,6 +69,7 @@ the vanilla houses underneath.
 | `models/original/` | the 24 shell DFFs and `all_walls.txd`, extracted from SA-MP's `SAMP.img` |
 | `models/baked/` | reworked interiors (drop-in replacements, same names) |
 | `screenshots/before`, `after`, `compare` | Ariane captures and the generated before/after grids |
+| `screenshots/ingame` | MTA:SA client captures |
 | `tools/img.py` | IMG v2 extract/build |
 | `tools/bake_interiors.py` | headless Blender bake of the interiors |
 | `tools/view_house.py` | opens a house in Blender: original interior left, baked right, game-style shading, `night` slider |
