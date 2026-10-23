@@ -52,10 +52,15 @@ The shells ship with open window holes. Maps fill each one with SA-MP's 19466 `w
 Scavenge & Survive houses alone. That model has no prelight and a grey 127 material, so every pane glowed white
 at night, and its texture was a flat 16×16 grey at 85% alpha.
 
-- **Each exterior now has its own glass.** A double-sided pane sits in every opening, on one new untextured
-  material: blue-grey, alpha 150, and day/night prelight that turns it dark at night. The exteriors use vanilla
-  TXDs, which have no glass texture, hence the untextured material. Everything else in the DFF is left exactly as
-  SA-MP shipped it. With these models a server can stop placing `window001` in the houses.
+- **Each exterior now has its own glass.** Every opening gets a double-sided pane and a frame: a border, a centre
+  mullion on wide openings and a transom on tall ones. Everything else in the DFF is left exactly as SA-MP shipped
+  it. With these models a server can stop placing `window001` in the houses.
+- **The look follows vanilla's see-through glass.** In the Wang Cars showroom (`carshowwin_SFSX`) and the SF
+  Ammu-Nation (`ammuwindows_SFS`), glass is a white-material alpha texture with dark prelight (about 35 by day). It
+  reads as glass with the room behind it, never as a grey board; light, lit-from-inside windows come only from
+  bright night colours. The exteriors use vanilla TXDs, which have no glass texture, so the panes are untextured:
+  alpha 170, prelight graded from about 30 at the bottom to 60 at the top like a sky reflection, and dark at night.
+  The frames are an untextured cream.
 - **`window001` is fixed as well**, for maps that keep it. It gets day/night prelight and a white material, and
   `lsmall_window01` in `lsmall_shops.txd` becomes a 64×64 glass texture: a sky-to-street gradient with two
   reflection streaks, at 59% alpha so the room shows through. 19325 `lsmall_window01` (shop glass) shares that
@@ -95,13 +100,13 @@ the vanilla houses underneath.
 | `tools/bake_interiors.py` | headless Blender bake of the interiors |
 | `tools/window_seeds.py` | `window001` placements → per-shell seeds |
 | `tools/glaze_shells.py` | headless Blender: fits each seed to its opening by ray casting |
-| `tools/add_panes.py` | writes the panes into the exteriors (gtaLib, rest of the DFF untouched) |
+| `tools/add_panes.py` | writes the framed panes into the exteriors (gtaLib, rest of the DFF untouched) |
 | `tools/rework_window.py` | prelight for `window001`, new glass texture in `lsmall_shops.txd` |
 | `tools/view_house.py` | opens a house in Blender: original interior left, baked right, game-style shading, `night` slider |
 | `tools/compare.py` | builds `screenshots/compare/*.png` |
 | `tools/make_ipl.py` | server placements → IPL for Ariane |
 | `tools/blender_call.py` | sends one command to a running Blender's blender-mcp socket (screenshots, scripted edits) |
-| `ariane/*.ps1`, `ariane/removals.py` | start/drive Ariane, swap original/baked models, replay removals over one connection, take the named shots |
+| `ariane/*.ps1`, `ariane/removals.py`, `ariane/look_at.py` | start/drive Ariane, swap original/baked models, replay removals over one connection, aim the camera at a placed model (vanilla references), take the named shots |
 
 ## Workflow
 

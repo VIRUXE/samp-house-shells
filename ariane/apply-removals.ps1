@@ -9,5 +9,5 @@ pwsh $ctl session begin $Session | Out-Null
 $env:ARIANE_ENGINE_TCP_PORT = '48731'
 $env:ARIANE_ENGINE_TOKEN = Get-Content -Raw (Join-Path $env:LOCALAPPDATA 'ariane-agent\token')
 $python = 'C:\dev\gta\sa\tools\ariane-agent\ariane-agent-windows-x64\.venv-agent\Scripts\python.exe'
-$extra = if ($WithoutPanes) { @('--without-panes') } else { @() }
-& $python (Join-Path $PSScriptRoot 'removals.py') $GameDir @extra
+$script = Join-Path $PSScriptRoot 'removals.py'
+if ($WithoutPanes) { & $python $script $GameDir --without-panes } else { & $python $script $GameDir }

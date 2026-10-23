@@ -25,5 +25,7 @@ for ($i = 0; $i -lt 60; $i++) {
     pwsh (Join-Path $PSScriptRoot 'ctl.ps1') ping 2>$null | Out-Null
     if ($LASTEXITCODE -eq 0) { break }
 }
-pwsh (Join-Path $PSScriptRoot 'apply-removals.ps1') -GameDir $GameDir -WithoutPanes:($Which -eq 'baked')  # baked exteriors carry their own glass
+$removals = Join-Path $PSScriptRoot 'apply-removals.ps1'
+# baked exteriors carry their own glass, so hide the maps' window001 too
+if ($Which -eq 'baked') { pwsh $removals -GameDir $GameDir -WithoutPanes } else { pwsh $removals -GameDir $GameDir }
 "Ariane is showing the $Which shells"
