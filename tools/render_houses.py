@@ -6,7 +6,8 @@ Each state (original: models/original, reworked: models/baked) loads the exterio
 a room behind it. Materials are flat emission the way the game lights buildings: texture x material colour x 2 x
 prelight, the prelight blended from the day to the night colours; a model without prelight (the original interiors)
 gets the texture as is, day or night. Midnight renders are exposed 1.3 stops up so they stay readable. Alpha comes from the texture and the material colour. The camera looks from the
-corner between the two walls with the most window area (data/windows.json). Raw renders go to work/renders/, and
+corner between the two walls with the most window area (data/windows.json); a second, close-up render shows the
+reworked house's biggest window. Raw renders go to work/renders/, and
 tools/gallery.py turns them into screenshots/houses/<house>.png.
 """
 
@@ -207,6 +208,35 @@ def render(house: str, state: str, out: Path) -> None:
         print(f"rendered {scene.render.filepath}")
 
 
+def detail(house: str, out: Path) -> None:
+    """Close-up at noon of the biggest window the camera can see clearly (a little to the side and below):
+    work/renders/<house>-detail.png."""
+    windows = json.loads((ROOT / "data" / "windows.json").read_text()).get(house, [])
+    if not windows:
+        return
+    scene, cam = bpy.context.scene, bpy.context.scene.camera
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    for w in sorted(windows, key=lambda o: -o["width"] * o["height"]):  # the biggest window with a clear view
+        centre, normal = Vector(w["centre"]), Vector(w["normal"])
+        for side in (1, -1):
+            eye = centre + normal * (w["width"] * 1.4 + 1.2) + Vector((0, 0, 1)).cross(normal) * (side * w["width"] * 0.6) + Vector((0, 0, -0.5))
+            start = centre + normal * 0.15
+            hit = scene.ray_cast(depsgraph, start, (eye - start).normalized(), distance=(eye - start).length)[0]
+            if not hit:
+                break
+        else:
+            continue
+        break
+    cam.location = eye
+    cam.rotation_euler = (centre - cam.location).to_track_quat("-Z", "Y").to_euler()
+    lens, cam.data.lens = cam.data.lens, 35
+    scene["night"], scene.view_settings.exposure = 0.0, 0.0
+    next(n for n in scene.world.node_tree.nodes if n.type == "BACKGROUND").inputs["Color"].default_value = (*SKY["noon"], 1)
+    scene.render.filepath = str(out / f"{house}-detail.png")
+    bpy.ops.render.render(write_still=True)
+    cam.data.lens = lens
+
+
 def main() -> None:
     args = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     addon_utils.enable("DragonFF", default_set=True)
@@ -235,6 +265,8 @@ def main() -> None:
             restyle(objects + interior)
             stage(house, objects + interior, interior)
             render(house, state, out)
+            if state == "reworked":
+                detail(house, out)
 
 
 main()

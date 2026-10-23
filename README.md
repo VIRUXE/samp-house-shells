@@ -56,9 +56,13 @@ The shells ship with open window holes. Maps fill each one with SA-MP's 19466 `w
 Scavenge & Survive houses alone. That model has no prelight and a grey 127 material, so every pane glowed white
 at night, and its texture was a flat 16×16 grey at 85% alpha.
 
-- **Each exterior now has its own glass.** Every opening gets a double-sided pane and a frame styled after the window
-  texture in the house's vanilla TXD: white sashes in SF, weathered wood in Ganton, louvres, security bars, and so
-  on (see [the houses](docs/houses.md)). Everything else in the DFF is left exactly as SA-MP shipped
+- **Each exterior now has its own windows.** Every opening gets a lined reveal, a sill, glass set into the wall, a
+  frame that stands out of it and, behind it, curtains, a blind or nothing. The frame follows the window texture in
+  the house's vanilla TXD: white sashes in SF, weathered wood in Ganton, louvres, security bars, and so on (see
+  [the houses](docs/houses.md)).
+
+  ![window detail](screenshots/houses/details.png)
+ Everything else in the DFF is left exactly as SA-MP shipped
   it. With these models a server can stop placing `window001` in the houses.
 - **The look follows vanilla's see-through glass.** In the Wang Cars showroom (`carshowwin_SFSX`) and the SF
   Ammu-Nation (`ammuwindows_SFS`), glass is a white-material alpha texture with dark prelight (about 35 by day). It

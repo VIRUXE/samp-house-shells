@@ -9,6 +9,18 @@ blended from the day colours to the night colours. The products are taken in gam
 renders are exposed 1.3 stops up so they stay readable; in game, the ambient light added to buildings does much the
 same. The camera looks from the corner between the two walls with the most glass.
 
+Each window is built from untextured parts, with the detail in vertex colours (the day and night prelight SA lerps
+per vertex), because the vanilla TXDs the exteriors use have no glass, frame or fabric textures:
+
+- the opening is lined to the depth of the wall (measured against the interior model), with a sill that stands out;
+- the glass sits half way into the wall and carries a sky-to-street gradient, a soft diagonal reflection band and
+  darker edges, at vanilla's dark see-through level;
+- the frame bars are boxes that stand out of the glass, with lit tops and dark undersides;
+- behind the glass hang curtains (with folds), a part-lowered blind (with slats) or nothing, chosen per window with a
+  fixed seed, in the district's colours.
+
+![window detail](../screenshots/houses/details.png)
+
 Frames follow the window texture in each house's vanilla TXD (`STYLES` in `tools/add_panes.py`), so a pane looks like
 the windows on the vanilla houses next to it.
 

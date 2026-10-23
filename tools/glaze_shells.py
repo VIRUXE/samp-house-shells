@@ -8,7 +8,9 @@ roughly rectangular gap in a plane as a seed; maps only glaze some holes (lshous
 Each seed is then fitted: rays are cast straight through the wall on a 4 cm grid around it, the open cells connected to
 the seed are the hole, their bounds are the opening, and the wall faces hit just outside it give the depth. Openings
 that run off the search area (open sides) are dropped, and scanned ones that hold a map door object (entrances), are
-not fully rectangular (arched doorways) or are over 2.4 m tall (garages), duplicates merged. The result is data/windows.json: per house, a list of openings in the model's own frame.
+not fully rectangular (arched doorways) or are over 2.4 m tall (garages), duplicates merged. Each opening's normal is turned to face out of the house (the interior model is near on the inside), and the
+wall thickness around it is kept. The result is data/windows.json: per house, a list of openings in the model's own
+frame.
 """
 
 import json
@@ -133,19 +135,22 @@ def fit(bvh: BVHTree, centre: Vector, normal: Vector) -> dict | None:
                 queue.append(c)
     i0, i1 = min(c[0] for c in seen), max(c[0] for c in seen)
     j0, j1 = min(c[1] for c in seen), max(c[1] for c in seen)
-    depths = []
+    depths, thicknesses = [], []
     for i, j in [(i, j0 - 1) for i in range(i0, i1 + 1)] + [(i, j1 + 1) for i in range(i0, i1 + 1)] + [(i0 - 1, j) for j in range(j0, j1 + 1)] + [(i1 + 1, j) for j in range(j0, j1 + 1)]:
         front = bvh.ray_cast(point(i, j) - normal * PROBE, normal, 2 * PROBE)[0]
         back = bvh.ray_cast(point(i, j) + normal * PROBE, -normal, 2 * PROBE)[0]
         if front and back:
             depths.append(((front + back) / 2 - centre).dot(normal))
+            thicknesses.append((back - front).dot(normal))
     depth = sorted(depths)[len(depths) // 2] if depths else 0.0
+    thickness = sorted(thicknesses)[len(thicknesses) // 2] if thicknesses else 0.0
     mid = centre + normal * depth + tangent * ((i0 + i1) / 2 * STEP) + up * ((j0 + j1) / 2 * STEP)
     return {
         "centre": [round(v, 3) for v in mid],
         "normal": [round(v, 3) for v in normal],
         "width": round((i1 - i0 + 1) * STEP, 3),
         "height": round((j1 - j0 + 1) * STEP, 3),
+        "thickness": round(max(thickness, 0.0), 3),  # wall faces either side of the opening; 0 for a single-sided wall
         "open_cells": len(seen),
         "cells": (i1 - i0 + 1) * (j1 - j0 + 1),
     }
@@ -162,6 +167,34 @@ def holds_door(hole: dict, doors: list[dict]) -> bool:
     return False
 
 
+def outward(rooms: BVHTree, hole: dict) -> dict:
+    """Point the opening's normal out of the house and measure the reveal.
+
+    The exterior walls are single planes; the inside face of the wall belongs to the interior model. Just above and
+    beside the opening, a ray into the room meets that face within centimetres, while a ray outwards meets nothing.
+    The median distance on the inside is the reveal depth (the wall thickness the window sits in).
+    """
+    centre, normal = Vector(hole["centre"]), Vector(hole["normal"])
+    tangent = Vector((0, 0, 1)).cross(normal)
+    probes = [centre + Vector((0, 0, hole["height"] / 2 + 0.15)) + tangent * u for u in (-hole["width"] / 3, 0, hole["width"] / 3)]
+    probes += [centre + tangent * (side * (hole["width"] / 2 + 0.15)) for side in (-1, 1)]
+    votes, reveals = 0, []
+    for p in probes:
+        ahead = rooms.ray_cast(p - normal * 0.01, normal, 1.5)
+        behind = rooms.ray_cast(p + normal * 0.01, -normal, 1.5)
+        da = ahead[3] if ahead[0] is not None else None
+        db = behind[3] if behind[0] is not None else None
+        if da is not None and (db is None or da < db):
+            votes += 1  # the room is ahead: the normal points in
+            reveals.append(da)
+        elif db is not None:
+            votes -= 1
+            reveals.append(db)
+    reveal = round(sorted(reveals)[len(reveals) // 2], 3) if reveals else 0.0
+    flipped = [round(-v, 3) + 0.0 for v in normal] if votes > 0 else hole["normal"]
+    return {**hole, "normal": flipped, "thickness": reveal}
+
+
 def main() -> None:
     args = sys.argv[sys.argv.index("--") + 1 :]
     src, seeds_path, out = Path(args[0]), Path(args[1]), Path(args[2])
@@ -169,6 +202,7 @@ def main() -> None:
     houses = args[3:] or list(seeds)
     result = json.loads(out.read_text()) if out.exists() else {}
     for house in houses:
+        rooms = load_bvh(src / f"{house}int.dff")[0]
         bvh, lo, hi = load_bvh(src / f"{house}.dff")
         mapped = [(Vector(s["centre"]), Vector((1, 0, 0)) if s["normal"] == "x" else Vector((0, 1, 0)), "map") for s in seeds[house]["windows"]]
         scanned = [(c, n, "scan") for c, n in scan(bvh, lo, hi)]
@@ -178,7 +212,7 @@ def main() -> None:
             if not hole or (source == "scan" and (hole["height"] > MAX_WINDOW[1] or hole["open_cells"] < 0.99 * hole["cells"] or holds_door(hole, seeds[house]["doors"]))):
                 continue
             if not any((Vector(hole["centre"]) - Vector(o["centre"])).length < 0.3 for o in openings):
-                openings.append({**hole, "source": source})
+                openings.append({**outward(rooms, hole), "source": source})
         result[house] = openings
         print(f"{house}: {len(mapped)} map seeds, {len(scanned)} scanned -> {len(openings)} openings ({sum(o['source'] == 'scan' for o in openings)} from the scan)")
         for o in openings:
